@@ -40,7 +40,8 @@
       </div>
     </div>
     <div class="fullscreen" v-if="showScan">
-        <qrcode-stream @decode="onDecode"></qrcode-stream>
+      <b-button v-on:click="hideScanModal" type="is-primary" style="width:50px; position:fixed; z-index:999; top:10px; right:10px;">X</b-button>
+      <qrcode-stream @decode="onDecode"></qrcode-stream>
     </div>
     <div class="fullscreen" v-if="showUnlock">
         <h1 style="margin-top:30px">Inserisci pin</h1>
@@ -127,6 +128,10 @@ export default {
     }
   },
   methods: {
+    hideScanModal() {
+      const app = this
+      app.showScan = false
+    },
     addNumber(number){
       const app = this
       if(app.focus === 'lyra'){

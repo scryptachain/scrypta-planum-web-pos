@@ -34,7 +34,8 @@
       <br />
       <br />
     </div>
-    <div v-if="showScanModal">
+    <div class="fullscreen" v-if="showScanModal">
+      <b-button v-on:click="hideScanModal" type="is-primary" style="width:50px; position:fixed; z-index:999; top:10px; right:10px;">X</b-button>
       <qrcode-stream @decode="onDecode"></qrcode-stream>
     </div>
     <div v-if="!wallet">
@@ -153,6 +154,10 @@ export default {
     }
   },
   methods: {
+    hideScanModal() {
+      const app = this
+      app.showScanModal = false
+    },
     onDecode (decodedString) {
       const app = this
       app.showScanModal = false

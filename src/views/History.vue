@@ -1,5 +1,8 @@
 <template>
   <div class="settings">
+    <b>Il tuo bilancio</b><br><br>
+    <h3 class="title is-3">{{ userBalance }} {{ ticker }}</h3>
+    <hr>
     <div v-if="transactions.unconfirmed.length > 0">
       <b>Transazioni in attesa</b><br><br>
       <div class="card" v-for="tx in transactions.unconfirmed" v-bind:key="tx.sxid">
@@ -48,11 +51,16 @@ export default {
     return {
       scrypta: new ScryptaCore(true),
       address: "",
+      ticker: "",
       wallet: "",
       axios: axios,
       currency: 'eur',
       chain: '6RQ54yHx2dARWkN8Biiw3gDjb4sB5hSHSH',
-      transactions: []
+      transactions: {
+        confirmed: [],
+        unconfirmed: []
+      },
+      userBalance: 0
     };
   },
   async mounted() {
@@ -77,6 +85,13 @@ export default {
         }
       }
     }
+
+    let exp = app.wallet.split(':')
+    let balance = await app.scrypta.post('/sidechain/balance',{
+      dapp_address: exp[0],
+      sidechain_address: app.chain
+    })
+    app.userBalance = balance.balance
 
     if (app.wallet.length > 0) {
       let SIDS = app.wallet.split(":");

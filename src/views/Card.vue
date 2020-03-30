@@ -11,7 +11,8 @@
       </div>  
     </div>
     <div class="fullscreen" v-if="showScan">
-        <qrcode-stream @decode="onDecode"></qrcode-stream>
+      <b-button v-on:click="hideScanModal" type="is-primary" style="width:50px; position:fixed; z-index:999; top:10px; right:10px;">X</b-button>
+      <qrcode-stream @decode="onDecode"></qrcode-stream>
     </div>
   </div>
 </template>
@@ -71,6 +72,10 @@ export default {
     }
   },
   methods: {
+    hideScanModal() {
+      const app = this
+      app.showScan = false
+    },
     showScanQR(){
       const app = this
       app.showScan = true
@@ -80,10 +85,11 @@ export default {
       app.showScan = false
       app.guestwallet = decodedString
       let exp = app.guestwallet.split(':')
-      let balance = await app.scrypta.get('/balance/' + exp[0])
-      if(balance.balance > app.amountLyra){
-        app.userBalance = balance.balance
-      }
+      let balance = await app.scrypta.post('/sidechain/balance',{
+        dapp_address: exp[0],
+        sidechain_address: app.chain
+      })
+      app.userBalance = balance.balance
     },
   }
 };
