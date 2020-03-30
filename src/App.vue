@@ -10,6 +10,7 @@
         <template slot="start">
           <b-navbar-item href="/#/">Home</b-navbar-item>
           <b-navbar-item href="/#/settings">Impostazioni</b-navbar-item>
+          <b-navbar-item href="/#/card">Controlla card</b-navbar-item>
           <b-navbar-item href="/#/history">Storico transazioni</b-navbar-item>
         </template>
 

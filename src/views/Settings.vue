@@ -1,6 +1,6 @@
 <template>
   <div class="settings">
-    <b>La tua identità</b><br>
+    <b>La tua identità</b><br><br>
     <v-gravatar :email="address" style="width:50%" /><br>
     <span style="font-size:12px">{{ address }}</span>
     <hr>

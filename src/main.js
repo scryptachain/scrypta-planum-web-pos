@@ -11,7 +11,7 @@ import VueQrcode from 'vue-qrcode'
 Vue.component('v-gravatar', Gravatar);
 Vue.use(VueQrcodeReader)
 Vue.component('vue-qrcode', VueQrcode)
-Vue.config.productionTip = false
+Vue.config.productionTip = true
 Vue.use(Buefy)
 
 new Vue({
