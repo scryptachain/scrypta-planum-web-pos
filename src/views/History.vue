@@ -17,6 +17,7 @@
           </div>
         </div>
       </div>
+      <br>
     </div>
     <div v-if="transactions.confirmed.length > 0">
       <b>Transazioni confermate</b><br><br>
