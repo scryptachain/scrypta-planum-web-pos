@@ -87,7 +87,6 @@
               <b-input
                 type="password"
                 v-model="password"
-                password-reveal
                 placeholder="Your main password"
                 required
               ></b-input>
@@ -97,7 +96,6 @@
               <b-input
                 type="password"
                 v-model="passwordrepeat"
-                password-reveal
                 placeholder="Repeat password"
                 required
               ></b-input>
@@ -168,7 +166,7 @@ export default {
         inputAttrs: {
           type: "password"
         },
-        trapFocus: true,
+        trapFocus: false,
         onConfirm: async password => {
           let key = await app.scrypta.readKey(password, dataKey);
           if (key !== false) {
@@ -200,7 +198,7 @@ export default {
           inputAttrs: {
             type: "password"
           },
-          trapFocus: true,
+          trapFocus: false,
           onConfirm: async password => {
             let key = await app.scrypta.readKey(password, dataKey);
             if (key !== false) {
