@@ -43,7 +43,8 @@
           <div class="container" id="create" style="margin-top:50px;">
             <div class="">
               <div style="padding: 50px 20px;">
-                <h1 class="title is-1">Start Now</h1>
+                <img src="./assets/planum.png" width="250"><br><br>
+                <h1 class="title is-3">Scrypta Planum Web PoS</h1>
                 <br />
                 <h2 class="subtitle">
                   <br />Puoi accedere con Scrypta ID extension o creando una nuova identità
