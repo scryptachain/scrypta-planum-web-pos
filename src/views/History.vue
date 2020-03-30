@@ -30,7 +30,7 @@
             </figure>
           </div>
             <div class="media-content">
-              <p class="title is-4"><span v-if="tx.amount > 0">+</span> {{ tx.amount }} {{ ticker }}</p>
+              <p class="title is-4"><span v-if="tx.amount > 0">+</span>{{ tx.amount }} {{ ticker }}</p>
               <p class="subtitle is-6">al blocco <b>{{ tx.block }}</b> da <b>{{ tx.from.substr(0,3) }}...{{ tx.from.substr(-3) }}</b></p>
             </div>
           </div>
