@@ -5,7 +5,7 @@
       <div v-if="!userBalance" style="padding:5px 10px">
         <b-button type="is-primary" v-on:click="showScanQR()" size="is-large">CONTROLLA ORA</b-button>
       </div>
-      <div v-if="userBalance">
+      <div v-if="userBalance !== false">
         <hr>
         <h1>Il saldo è {{ userBalance }} {{ ticker }}</h1>
       </div>  
