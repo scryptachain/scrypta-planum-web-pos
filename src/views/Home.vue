@@ -84,7 +84,7 @@ export default {
       chains: {},
       amountSidechain: 0,
       focus: 'lyra',
-      chain: 'main',
+      chain: '6RQ54yHx2dARWkN8Biiw3gDjb4sB5hSHSH',
       showScan: false,
       showWaiting: false,
       showUnlock: false,

@@ -39,14 +39,8 @@ export default {
       wallet: "",
       axios: axios,
       currency: 'eur',
-      chain: 'main',
-      assets: [
-        {
-          chain: "main",
-          ticker: "LYRA",
-          name: "Scrypta"
-        }
-      ],
+      chain: '6RQ54yHx2dARWkN8Biiw3gDjb4sB5hSHSH',
+      assets: [],
       currencies: ["eur", "usd", "gbp"]
     };
   },
@@ -69,13 +63,13 @@ export default {
       let identity = await app.scrypta.returnIdentity(app.address);
       app.wallet = identity;
       app.isLogging = false;
-      app.assets = [
+      /* app.assets = [
         {
           chain: "main",
           ticker: "LYRA",
           name: "Scrypta"
         }
-      ]
+      ]*/ 
       let sidechains = await app.scrypta.get('/sidechain/list')
       for(let x in sidechains.data){
         let sidechain = sidechains.data[x]

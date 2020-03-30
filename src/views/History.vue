@@ -50,7 +50,7 @@ export default {
       wallet: "",
       axios: axios,
       currency: 'eur',
-      chain: 'main',
+      chain: '6RQ54yHx2dARWkN8Biiw3gDjb4sB5hSHSH',
       transactions: []
     };
   },
