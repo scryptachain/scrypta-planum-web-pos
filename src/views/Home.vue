@@ -61,7 +61,8 @@
         <div v-on:click='addPin(0)' class="pos-btn">0</div>
         <div v-on:click='cleanPin()' class="pos-btn">C</div>
         <div style="padding:5px 10px">
-          <b-button type="is-success" v-on:click="payWithGuestWallet()" size="is-large">CONFERMA</b-button>
+          <b-button type="is-success" v-if="!isPaying" v-on:click="payWithGuestWallet()" size="is-large">CONFERMA</b-button>
+          <div v-if="isPaying">Effettuo il pagamento...</div>
         </div>
     </div>
   </div>
@@ -89,6 +90,7 @@ export default {
       showScan: false,
       showWaiting: false,
       showUnlock: false,
+      isPaying: false,
       isWaiting: false,
       payment: {},
       interval: {},
@@ -417,78 +419,85 @@ export default {
     },
     async payWithGuestWallet(){
       const app = this
-      let exp = app.guestwallet.split(':')
-      let guestpub = exp[0]
-      if(app.guestpin.length > 0){
-        let key = await app.scrypta.readKey(app.guestpin, app.guestwallet)
-        if(key !== false){
-          let sendsuccess = false
-          let yy = 0
-          let valid = false
-          while(sendsuccess === false){
-            if(app.chain !== 'main'){
-              let send = await app.scrypta.post('/sidechain/send',{
-                  from: guestpub, 
-                  sidechain_address: app.chain,
-                  private_key: key.prv,
-                  pubkey: key.key,
-                  to: app.address,
-                  amount: app.amountSidechain
-              })
-              if(send.uuid !== undefined && send.txs.length === 1 && send.txs[0].length === 64){
-                sendsuccess = true
-                valid = true
+      if(app.isPaying === false){
+        app.isPaying = true
+        let exp = app.guestwallet.split(':')
+        let guestpub = exp[0]
+        if(app.guestpin.length > 0){
+          let key = await app.scrypta.readKey(app.guestpin, app.guestwallet)
+          if(key !== false){
+            let sendsuccess = false
+            let yy = 0
+            let valid = false
+            while(sendsuccess === false){
+              if(app.chain !== 'main'){
+                let send = await app.scrypta.post('/sidechain/send',{
+                    from: guestpub, 
+                    sidechain_address: app.chain,
+                    private_key: key.prv,
+                    pubkey: key.key,
+                    to: app.address,
+                    amount: app.amountSidechain
+                })
+                if(send.uuid !== undefined && send.txs.length === 1 && send.txs[0].length === 64){
+                  sendsuccess = true
+                  valid = true
+                }
+              }else{
+                let send = await app.scrypta.post('/send',{
+                    from: guestpub, 
+                    private_key: key.prv,
+                    to: app.address,
+                    amount: app.amountLyra
+                })
+                if(send.txid !== undefined && send.txid !== null && send.txid.length === 64){
+                  sendsuccess = true
+                  valid = true
+                }
               }
+              yy++
+              if(yy > 4){
+                sendsuccess = true
+                valid = false
+              }
+            }
+            if(valid){
+              app.guestpin = ''
+              app.$buefy.toast.open({
+                duration: 5000,
+                message: `Invio riuscito correttamente.`,
+                position: 'is-bottom',
+                type: 'is-success'
+              })
+              app.showUnlock = false
+              app.isPaying = false
             }else{
-              let send = await app.scrypta.post('/send',{
-                  from: guestpub, 
-                  private_key: key.prv,
-                  to: app.address,
-                  amount: app.amountLyra
+              app.$buefy.toast.open({
+                duration: 5000,
+                message: `Invio non riuscito si prega di riprovare.`,
+                position: 'is-bottom',
+                type: 'is-danger'
               })
-              if(send.txid !== undefined && send.txid !== null && send.txid.length === 64){
-                sendsuccess = true
-                valid = true
-              }
+              app.isPaying = false
             }
-            yy++
-            if(yy > 4){
-              sendsuccess = true
-              valid = false
-            }
-          }
-          if(valid){
-            app.guestpin = ''
-            app.$buefy.toast.open({
-              duration: 5000,
-              message: `Invio riuscito correttamente.`,
-              position: 'is-bottom',
-              type: 'is-success'
-            })
-            app.showUnlock = false
           }else{
             app.$buefy.toast.open({
               duration: 5000,
-              message: `Invio non riuscito si prega di riprovare.`,
+              message: `Il pin è invalido.`,
               position: 'is-bottom',
               type: 'is-danger'
             })
+            app.isPaying = false
           }
         }else{
-          app.$buefy.toast.open({
-            duration: 5000,
-            message: `Il pin è invalido.`,
-            position: 'is-bottom',
-            type: 'is-danger'
+          this.$buefy.toast.open({
+              duration: 5000,
+              message: `Inserisci il pin.`,
+              position: 'is-bottom',
+              type: 'is-danger'
           })
+          app.isPaying = false
         }
-      }else{
-        this.$buefy.toast.open({
-            duration: 5000,
-            message: `Inserisci il pin.`,
-            position: 'is-bottom',
-            type: 'is-danger'
-        })
       }
     }
   },
