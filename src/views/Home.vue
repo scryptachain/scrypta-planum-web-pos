@@ -431,15 +431,9 @@ export default {
             let valid = false
             while(sendsuccess === false){
               if(app.chain !== 'main'){
-                let send = await app.scrypta.post('/sidechain/send',{
-                    from: guestpub, 
-                    sidechain_address: app.chain,
-                    private_key: key.prv,
-                    pubkey: key.key,
-                    to: app.address,
-                    amount: app.amountSidechain
-                })
-                if(send.uuid !== undefined && send.txs.length === 1 && send.txs[0].length === 64){
+                app.scrypta.usePlanum(app.chain)
+                let send = await app.scrypta.sendPlanumAsset(app.guestwallet, app.guestpin, app.address, app.amountSidechain)
+                if(send !== false){
                   sendsuccess = true
                   valid = true
                 }
